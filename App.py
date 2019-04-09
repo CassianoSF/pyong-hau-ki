@@ -42,6 +42,8 @@ class App:
 
         self.animacao = False
 
+        self.ortho = False
+
     def mount_mvp(self, model, view, projection):
         trans_matrix = numpy.transpose(pyrr.matrix44.create_from_translation(model['translation']))
         rot_matrix_x = numpy.transpose(pyrr.matrix44.create_from_x_rotation(model['rotation'][0]))
@@ -57,14 +59,17 @@ class App:
             numpy.array(view['up'],       dtype="float32")
         ))
 
-        proj_matrix = numpy.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(-1, 1, -1, 1, 0.001, 300, dtype=None))
-        # proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
-        #     projection['fovy'],
-        #     projection['aspect'],
-        #     projection['near'],
-        #     projection['far'],
-        #     projection['dtype']
-        # ))
+        if self.ortho:
+            proj_matrix = numpy.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(-6, 6, -3, 3, 0.001, 300, dtype=None))
+        
+        else:
+            proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
+                projection['fovy'],
+                projection['aspect'],
+                projection['near'],
+                projection['far'],
+                projection['dtype']
+            ))
 
         m = numpy.matmul(numpy.matmul(proj_matrix,view_matrix),model_matrix) 
         return numpy.transpose(m)
@@ -172,6 +177,9 @@ class App:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
+        if event.type == pygame.KEYDOWN:
+            if event.unicode == 'p':
+                self.ortho = not self.ortho
 
 def main():
     pygame.init()
