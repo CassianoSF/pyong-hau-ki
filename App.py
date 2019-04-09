@@ -57,13 +57,14 @@ class App:
             numpy.array(view['up'],       dtype="float32")
         ))
 
-        proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
-            projection['fovy'],
-            projection['aspect'],
-            projection['near'],
-            projection['far'],
-            projection['dtype']
-        ))
+        proj_matrix = numpy.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(-1, 1, -1, 1, 0.001, 300, dtype=None))
+        # proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
+        #     projection['fovy'],
+        #     projection['aspect'],
+        #     projection['near'],
+        #     projection['far'],
+        #     projection['dtype']
+        # ))
 
         m = numpy.matmul(numpy.matmul(proj_matrix,view_matrix),model_matrix) 
         return numpy.transpose(m)
