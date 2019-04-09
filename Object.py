@@ -1,10 +1,11 @@
 import pygame, numpy, pyrr, math, os, string
 from OpenGL.GL import *
-from Shader import Shader
-from VertexBuffer import VertexBuffer
-from VertexArray import VertexArray
-from IndexBuffer import IndexBuffer
-from Texture import Texture
+
+from Core.Shader        import Shader
+from Core.VertexBuffer  import VertexBuffer
+from Core.VertexArray   import VertexArray
+from Core.IndexBuffer   import IndexBuffer
+from Core.Texture       import Texture
 
 class Object():
     def __init__(self, objFileName, textureFileName):
@@ -85,7 +86,11 @@ class Object():
 
 
             self.texture = Texture(textureFileName)
-            self.shader = Shader("VertexShader.shader", "FragmentShader.shader")
+            self.shader = Shader(
+                "./resources/shaders/VertexShader.shader", 
+                "./resources/shaders/FragmentShader.shader"
+            )
+            
             self.va = VertexArray()
             self.vb_positions = VertexBuffer(vertices)
             self.va.add_buffer(0, 3, self.vb_positions)

@@ -1,23 +1,18 @@
 import pygame, numpy, pyrr, math, os, string
 from OpenGL.GL import *
-from Shader import Shader
+
 from Object import Object
-from VertexBuffer import VertexBuffer
-from VertexArray import VertexArray
-from IndexBuffer import IndexBuffer
-from Texture import Texture
 
 WINDOW_WIDTH=1280
 WINDOW_HEIGHT=720
 
 class App:
     def __init__(self):
-        self.tabuleiro = Object("../res/tabuleiro.obj", "../textures/the_floor/the_floor/floor_2.png")
-        self.player11 = Object("../res/player1.obj", "../textures/the_floor/the_floor/floor_2.png")
-        self.player12 = Object("../res/player1.obj", "../textures/the_floor/the_floor/floor_2.png")
-        self.player21 = Object("../res/player2.obj", "../textures/the_floor/the_floor/crate_1.png")
-        self.player22 = Object("../res/player2.obj", "../textures/the_floor/the_floor/crate_1.png")
-
+        self.tabuleiro = Object("./resources/models/tabuleiro.obj", "./resources/textures/triangles_red.png")
+        self.player11  = Object("./resources/models/player1.obj",   "./resources/textures/triangles_yellow.png")
+        self.player12  = Object("./resources/models/player1.obj",   "./resources/textures/triangles_yellow.png")
+        self.player21  = Object("./resources/models/player2.obj",   "./resources/textures/triangles_blue.png")
+        self.player22  = Object("./resources/models/player2.obj",   "./resources/textures/triangles_blue.png")
 
         self.player11.translate(0.8,0.2,0.8)
         self.player11.scale(0.2,0.2,0.2)
@@ -36,6 +31,7 @@ class App:
             'target':   [0.0, 0.0, 0.0],
             'up':       [0.0, 1.0, 0.0]
         }
+
         self.projection = {
             'fovy':   45.0, 
             'aspect': WINDOW_WIDTH/WINDOW_HEIGHT,
