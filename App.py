@@ -70,8 +70,7 @@ def main():
 
     while True:
         [app.handle_event(event) for event in pygame.event.get()]
-        print(str(int(clock.get_fps())))
-        clock.tick(2000)
+        clock.tick(60)
         app.render()
         pygame.display.flip()
 
