@@ -3,7 +3,7 @@ import pygame, math, numpy
 class Camera:
     def __init__(self, window_width, window_height):
         self.view = {
-            'position': [0.0, 0.0, 6.0],
+            'position': [0.0, 0.0, 5.0],
             'target':   [0.0, 0.0, 0.0],
             'up':       [0.0, 1.0, 0.0]
         }
@@ -16,8 +16,7 @@ class Camera:
             'dtype':  None 
         }
         self.orthogonal = False
-        self.animacao = False
-
+        self.animacao_inicial = True
 
     # def spin(self, degrees):
     #     rotation = [
@@ -75,34 +74,40 @@ class Camera:
                 self.move_backward(0.50)
 
     def update(self):
-        if not self.animacao:
-            pressed = pygame.key.get_pressed()
+        if self.animacao_inicial:
+            self.move_to(5, 5, 0, 10)
+            if self.view['position'][1] > 4.99 :
+                self.animacao_inicial = False
+            return
+           
 
-            if(pressed[pygame.K_r]):
-                self.view = {
-                    'position': [0.0, 0.0, 6.0],
-                    'target':   [0.0, 0.0, 0.0],
-                    'up':       [0.0, 0.0, 0.0]
-                }
+        pressed = pygame.key.get_pressed()
 
-            # if pressed[pygame.K_LEFT]:
-            #     self.spin(0.001)
-            # if pressed[pygame.K_RIGHT]:
-            #     self.spin(-0.001)
+        if(pressed[pygame.K_r]):
+            self.view = {
+                'position': [0.0, 0.0, 6.0],
+                'target':   [0.0, 0.0, 0.0],
+                'up':       [0.0, 1.0, 0.0]
+            }
 
-            if pressed[pygame.K_a]:
-                self.move_left(0.10)
-            if pressed[pygame.K_d]:
-                self.move_right(0.10)
+        # if pressed[pygame.K_LEFT]:
+        #     self.spin(0.001)
+        # if pressed[pygame.K_RIGHT]:
+        #     self.spin(-0.001)
 
-            if pressed[pygame.K_w]:
-                self.move_up(0.10)
-            if pressed[pygame.K_s]:
-                self.move_down(0.10)
+        if pressed[pygame.K_a]:
+            self.move_left(0.10)
+        if pressed[pygame.K_d]:
+            self.move_right(0.10)
 
-            if(pressed[pygame.K_1]):
-                self.move_to(1, 6, 5, 10)
-            if(pressed[pygame.K_2]):
-                self.move_to(1, 6, -5, 10)
-            if(pressed[pygame.K_3]):
-                self.move_to(2, 7, 0, 10)
+        if pressed[pygame.K_w]:
+            self.move_up(0.10)
+        if pressed[pygame.K_s]:
+            self.move_down(0.10)
+
+        if(pressed[pygame.K_1]):
+            self.move_to(1, 6, 5, 10)
+        if(pressed[pygame.K_2]):
+            self.move_to(1, 6, -5, 10)
+        if(pressed[pygame.K_3]):
+            self.move_to(2, 7, 0, 10)
