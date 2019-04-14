@@ -6,10 +6,13 @@ class Shader:
         vertex_shader = glCreateShader(GL_VERTEX_SHADER)
         fragment_shader = glCreateShader(GL_FRAGMENT_SHADER)
 
-        with open(frag_path, "r") as vert_file:
-            vert_source = vert_file.read()
-        with open(vert_path, "r") as frag_file:
-            frag_source = frag_file.read()
+        try:
+            with open(frag_path, "r") as vert_file:
+                vert_source = vert_file.read()
+            with open(vert_path, "r") as frag_file:
+                frag_source = frag_file.read()
+        except IOError:
+            print(".shaders file not found.")
 
         glShaderSource(vertex_shader, vert_source)
         glShaderSource(fragment_shader, frag_source)
