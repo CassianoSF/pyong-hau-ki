@@ -33,11 +33,11 @@ class App:
         self.player22.translate(-0.8,0.2,-0.8)
         self.player22.scale(0.2,0.2,0.2)
 
-        self.animacao = False
-        self.ortho = False
-
         self.camera = Camera(WINDOW_WIDTH, WINDOW_HEIGHT)
 
+        self.set_render_mode()
+
+    def set_render_mode(self):
         glEnable(GL_BLEND)
         # Transparency
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE)
@@ -49,7 +49,6 @@ class App:
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-
 
     def render(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
