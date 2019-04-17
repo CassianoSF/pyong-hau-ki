@@ -15,6 +15,12 @@ class App:
         player12_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
         player21_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
         player22_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
+
+        mouse_pointer_loader  = Loader("./resources/models/square.obj",  "./resources/textures/triangles_red.png")
+
+        self.mouse_pointer = Object(mouse_pointer_loader)
+        self.mouse_pointer.scale(1,0,1)
+        
         self.tabuleiro = Object(tabuleiro_loader)
         self.player11  = Object(player11_loader)
         self.player12  = Object(player12_loader)
@@ -37,6 +43,9 @@ class App:
 
         self.set_render_mode()
 
+
+        self.mouse_pointer_positions = [0,0,0]
+
     def set_render_mode(self):
         glEnable(GL_BLEND)
         # Transparency
@@ -50,6 +59,25 @@ class App:
             pygame.quit()
             quit()
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print(event)
+
+        if event.type == pygame.MOUSEMOTION:
+
+            p1 = numpy.array(self.camera.view['position'])
+            p2 = numpy.array(self.camera.view['target'])
+            squared_dist = numpy.sum(p1**2 + p2**2, axis=0)
+            dist = numpy.sqrt(squared_dist)
+
+
+            x, y = pygame.mouse.get_pos()
+            x = (x - WINDOW_WIDTH/2)/(WINDOW_WIDTH/2) * dist
+            y = (WINDOW_HEIGHT/2 - y)/(WINDOW_HEIGHT/2) * dist
+            self.mouse_pointer_positions = [x, 0, -y]
+            print(x, y)
+            # print(self.camera.view['target'])
+
+
     def render(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.camera.update()
@@ -58,6 +86,8 @@ class App:
         self.player12.render(self.camera)
         self.player21.render(self.camera)
         self.player22.render(self.camera)
+        self.mouse_pointer.render(self.camera)
+        self.mouse_pointer.move_to(self.mouse_pointer_positions)
 
 def main():
     pygame.init()

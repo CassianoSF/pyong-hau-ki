@@ -27,6 +27,7 @@ class Object():
             'rotation':    [0.0, 0.0, 0.0],
             'scale':       [1.0, 1.0, 1.0]
         }
+        self.mvp = []
 
     def translate(self, x, y, z):
         self.model['translation'] = [
@@ -69,13 +70,31 @@ class Object():
             return numpy.transpose(m)
 
 
+    def move_to(self, xyz):
+        for x in range(1,100):
+            if (round(self.model['translation'][0], 2) < xyz[0]):
+                self.model['translation'][0] += 0.01 
+            elif(round(self.model['translation'][0], 2) > xyz[0]):
+                self.model['translation'][0] -= 0.01 
+
+            if (round(self.model['translation'][1], 2) < xyz[1]):
+                self.model['translation'][1] += 0.01 
+            elif(round(self.model['translation'][1], 2) > xyz[1]):
+                self.model['translation'][1] -= 0.01 
+
+            if (round(self.model['translation'][2], 2) < xyz[2]):
+                self.model['translation'][2] += 0.01 
+            elif(round(self.model['translation'][2], 2) > xyz[2]):
+                self.model['translation'][2] -= 0.01 
+
+
     def render(self, camera):
 
-        mvp = self.mount_mvp(camera)
+        self.mvp = self.mount_mvp(camera)
 
         self.texture.bind()
         self.shader.add_uniform_1i("the_texture", 0)
-        self.shader.add_uniform_matrix_4f("mvp", mvp)
+        self.shader.add_uniform_matrix_4f("mvp", self.mvp)
         self.shader.bind()
         self.va.bind()
         self.ib.bind()
