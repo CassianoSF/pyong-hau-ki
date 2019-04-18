@@ -10,32 +10,22 @@ WINDOW_HEIGHT=720
 
 class App:
     def __init__(self):
-        tabuleiro_loader = Loader("./resources/models/tabuleiro.obj","./resources/textures/triangles_blue.png")
-        player11_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
-        player12_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
-        player21_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
-        player22_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
-        self.tabuleiro = Object(tabuleiro_loader)
-        self.player11  = Object(player11_loader)
-        self.player12  = Object(player12_loader)
-        self.player21  = Object(player21_loader)
-        self.player22  = Object(player22_loader)
+        sol_loader  = Loader("./resources/models/sphere.obj",  "./resources/textures/triangles_yellow.png")
+        terra_loader  = Loader("./resources/models/sphere.obj",  "./resources/textures/triangles_yellow.png")
+        self.sol  = Object(sol_loader)
+        self.terra  = Object(terra_loader)
 
-        self.player11.translate(0.8,0.2,0.8)
-        self.player11.scale(0.2,0.2,0.2)
+        self.sol.scale(2,2,2)
 
-        self.player12.translate(-0.8,0.2,0.8)
-        self.player12.scale(0.2,0.2,0.2)
-        
-        self.player21.translate(0.8,0.2,-0.8)
-        self.player21.scale(0.2,0.2,0.2)
-        
-        self.player22.translate(-0.8,0.2,-0.8)
-        self.player22.scale(0.2,0.2,0.2)
+        self.terra.translate(0,0,0)
+        self.terra.scale(0.2,0.2,0.2)
 
         self.camera = Camera(WINDOW_WIDTH, WINDOW_HEIGHT)
 
         self.set_render_mode()
+
+        self.counter = 0
+        self.frame = 0
 
     def set_render_mode(self):
         glEnable(GL_BLEND)
@@ -51,13 +41,14 @@ class App:
             quit()
 
     def render(self):
+        self.counter += 1
+        self.terra.model['translation'][0] = math.sin(self.counter/360 * math.pi) * 10
+        self.terra.model['translation'][2] = math.cos(self.counter/360 * math.pi) * 10
+        self.frame += 1
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.camera.update()
-        self.tabuleiro.render(self.camera)
-        self.player11.render(self.camera)
-        self.player12.render(self.camera)
-        self.player21.render(self.camera)
-        self.player22.render(self.camera)
+        self.sol.render(self.camera)
+        self.terra.render(self.camera)
 
 def main():
     pygame.init()
@@ -69,7 +60,7 @@ def main():
 
     while True:
         [app.handle_event(event) for event in pygame.event.get()]
-        clock.tick(60)
+        clock.tick(180)
         app.render()
         pygame.display.flip()
 

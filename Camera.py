@@ -3,7 +3,7 @@ import pygame, math, numpy
 class Camera:
     def __init__(self, window_width, window_height):
         self.view = {
-            'position': [0.0, 0.0, 5.0],
+            'position': [0.0, 50.0, 50.0],
             'target':   [0.0, 0.0, 0.0],
             'up':       [0.0, 1.0, 0.0]
         }
