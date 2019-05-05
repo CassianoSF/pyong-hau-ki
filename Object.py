@@ -87,6 +87,8 @@ class Object():
         self.shader.add_uniform_matrix_4f("M", self.model_matrix)
         self.shader.add_uniform_matrix_4f("V", self.view_matrix)
         self.shader.add_uniform_3f("LightPosition_worldspace", [10., 10., 10.])
+        self.shader.add_uniform_3f("position", self.model['translation'])
+
         self.shader.bind()
         self.va.bind()
         self.ib.bind()
