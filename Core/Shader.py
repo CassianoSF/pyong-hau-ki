@@ -43,10 +43,15 @@ class Shader:
 
     def add_uniform_matrix_4f(self, name, data):
         self.bind()
-        trans_uniform = glGetUniformLocation(self.id, name)
-        glUniformMatrix4fv(trans_uniform, 1, GL_FALSE, data)
+        uniform = glGetUniformLocation(self.id, name)
+        glUniformMatrix4fv(uniform, 1, GL_FALSE, data)
 
     def add_uniform_1i(self, name, data):
         self.bind()
-        texture_uniform = glGetUniformLocation(self.id, name)
-        glUniform1i(texture_uniform, data)
+        uniform = glGetUniformLocation(self.id, name)
+        glUniform1i(uniform, data)
+
+    def add_uniform_3f(self, name, data):
+        self.bind()
+        uniform = glGetUniformLocation(self.id, name)
+        glUniform3f(uniform, data[0], data[1], data[2])

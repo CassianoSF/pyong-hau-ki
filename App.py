@@ -15,11 +15,13 @@ class App:
         player12_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
         player21_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
         player22_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
+        # suzanne_loader  = Loader("./resources/models/suzanne.obj",  "./resources/textures/triangles_yellow.png")
         self.tabuleiro = Object(tabuleiro_loader)
         self.player11  = Object(player11_loader)
         self.player12  = Object(player12_loader)
         self.player21  = Object(player21_loader)
         self.player22  = Object(player22_loader)
+        # self.suzanne  = Object(suzanne_loader)
 
         self.player11.translate(0.8,0.2,0.8)
         self.player11.scale(0.2,0.2,0.2)
@@ -41,8 +43,10 @@ class App:
         glEnable(GL_BLEND)
         # Transparency
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnable(GL_DEPTH_TEST)
+        glDepthFunc(GL_LESS)
+        glEnable(GL_CULL_FACE)
 
     def handle_event(self, event):
         self.camera.handle_event(event)
@@ -58,6 +62,7 @@ class App:
         self.player12.render(self.camera)
         self.player21.render(self.camera)
         self.player22.render(self.camera)
+        # self.suzanne.render(self.camera)
 
 def main():
     pygame.init()
