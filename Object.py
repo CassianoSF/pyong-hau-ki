@@ -17,16 +17,25 @@ class Object():
         self.shader = loader.shader
         
         self.va = VertexArray()
+        
         self.vb_positions = VertexBuffer(self.vertices)
         self.va.add_buffer(0, 3, self.vb_positions)
+        
         self.vb_texture = VertexBuffer(self.tex_map)
         self.va.add_buffer(1, 2, self.vb_texture)
+        
+        self.vb_normals = VertexBuffer(self.normals)
+        self.va.add_buffer(2, 3, self.vb_normals)
+        
         self.ib = IndexBuffer(self.indices)
+
         self.model = {
             'translation': [0.0, 0.0, 0.0],
             'rotation':    [0.0, 0.0, 0.0],
             'scale':       [1.0, 1.0, 1.0]
         }
+        self.model_matrix = []
+        self.view_matrix = []   
 
     def translate(self, x, y, z):
         self.model['translation'] = [
@@ -45,9 +54,9 @@ class Object():
             rot_matrix_z = numpy.transpose(pyrr.matrix44.create_from_z_rotation(self.model['rotation'][2]))
             rot_matrix   = numpy.matmul(numpy.matmul(rot_matrix_x, rot_matrix_y),rot_matrix_z)
             scale_matrix = numpy.transpose(pyrr.matrix44.create_from_scale(self.model['scale'] ))
-            model_matrix = numpy.matmul(numpy.matmul(trans_matrix,rot_matrix),scale_matrix)
+            self.model_matrix = numpy.matmul(numpy.matmul(trans_matrix,rot_matrix),scale_matrix)
 
-            view_matrix = numpy.transpose(pyrr.matrix44.create_look_at(
+            self.view_matrix = numpy.transpose(pyrr.matrix44.create_look_at(
                 numpy.array(camera.view['position'], dtype="float32"),
                 numpy.array(camera.view['target'],   dtype="float32"),
                 numpy.array(camera.view['up'],       dtype="float32")
@@ -65,7 +74,7 @@ class Object():
                     camera.projection['dtype']
                 ))
 
-            m = numpy.matmul(numpy.matmul(proj_matrix,view_matrix),model_matrix) 
+            m = numpy.matmul(numpy.matmul(proj_matrix,self.view_matrix),self.model_matrix) 
             return numpy.transpose(m)
 
 
@@ -74,8 +83,10 @@ class Object():
         mvp = self.mount_mvp(camera)
 
         self.texture.bind()
-        self.shader.add_uniform_1i("the_texture", 0)
-        self.shader.add_uniform_matrix_4f("mvp", mvp)
+        self.shader.add_uniform_matrix_4f("MVP", mvp)
+        self.shader.add_uniform_matrix_4f("M", self.model_matrix)
+        self.shader.add_uniform_matrix_4f("V", self.view_matrix)
+        self.shader.add_uniform_3f("LightPosition_worldspace", [10., 10., 10.])
         self.shader.bind()
         self.va.bind()
         self.ib.bind()
