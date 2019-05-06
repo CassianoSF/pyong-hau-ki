@@ -12,7 +12,6 @@ out vec3 color;
 
 // Values that stay constant for the whole mesh.
 uniform sampler2D TextureSampler;
-uniform mat4 MV;
 uniform vec3 LightPosition;
 
 void main(){

@@ -87,7 +87,7 @@ class Object():
         self.shader.add_uniform_matrix_4f("model", self.model_matrix)
         self.shader.add_uniform_matrix_4f("view", self.view_matrix)
         self.shader.add_uniform_matrix_4f("projection", self.proj_matrix)
-        self.shader.add_uniform_3f("LightPosition", [0., 0., 40.])
+        self.shader.add_uniform_3f("LightPosition", [20., 20., 20.])
         self.shader.add_uniform_3f("position", list(map(lambda x:  x+0.3, self.model['translation'])))
 
         self.shader.bind()
