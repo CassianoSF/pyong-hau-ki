@@ -69,9 +69,9 @@ class Camera:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 4:
-                self.move_forward(0.50)
+                self.move_forward(0.25)
             elif event.button == 5:
-                self.move_backward(0.50)
+                self.move_backward(0.25)
 
     def update(self):
         if self.animacao_inicial:

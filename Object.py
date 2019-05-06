@@ -36,6 +36,7 @@ class Object():
         }
         self.model_matrix = []
         self.view_matrix = []   
+        self.proj_matrix = []   
 
     def translate(self, x, y, z):
         self.model['translation'] = [
@@ -63,10 +64,10 @@ class Object():
             ))
 
             if camera.orthogonal:
-                proj_matrix = numpy.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(-6, 6, -3, 3, 0.001, 300, dtype=None))
+                self.proj_matrix = numpy.transpose(pyrr.matrix44.create_orthogonal_projection_matrix(-6, 6, -3, 3, 0.001, 300, dtype=None))
             
             else:
-                proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
+                self.proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
                     camera.projection['fovy'],
                     camera.projection['aspect'],
                     camera.projection['near'],
@@ -74,8 +75,8 @@ class Object():
                     camera.projection['dtype']
                 ))
 
-            m = numpy.matmul(numpy.matmul(proj_matrix,self.view_matrix),self.model_matrix) 
-            return numpy.transpose(m)
+            # m = numpy.matmul(numpy.matmul(proj_matrix,self.view_matrix),self.model_matrix) 
+            # return numpy.transpose(m)
 
 
     def render(self, camera):
@@ -83,11 +84,11 @@ class Object():
         mvp = self.mount_mvp(camera)
 
         self.texture.bind()
-        self.shader.add_uniform_matrix_4f("MVP", mvp)
-        self.shader.add_uniform_matrix_4f("M", self.model_matrix)
-        self.shader.add_uniform_matrix_4f("V", self.view_matrix)
-        self.shader.add_uniform_3f("LightPosition_worldspace", [10., 10., 10.])
-        self.shader.add_uniform_3f("position", self.model['translation'])
+        self.shader.add_uniform_matrix_4f("model", self.model_matrix)
+        self.shader.add_uniform_matrix_4f("view", self.view_matrix)
+        self.shader.add_uniform_matrix_4f("projection", self.proj_matrix)
+        self.shader.add_uniform_3f("LightPosition", [0., 0., 40.])
+        self.shader.add_uniform_3f("position", list(map(lambda x:  x+0.3, self.model['translation'])))
 
         self.shader.bind()
         self.va.bind()
