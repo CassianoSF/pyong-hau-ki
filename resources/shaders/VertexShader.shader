@@ -22,7 +22,6 @@ uniform vec3 position;
 void main(){
 
 	mat4 MVP = transpose(model * view * projection);
-
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  MVP * vec4(vertexPositions,1);
 	
