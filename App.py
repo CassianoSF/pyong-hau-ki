@@ -23,12 +23,12 @@ class App:
         pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.DOUBLEBUF | pygame.OPENGL)
         self.clock = pygame.time.Clock()
 
-        tabuleiro_loader = Loader("./resources/models/tabuleiro.obj")
-        player11_loader  = Loader("./resources/models/player1.obj")
-        player12_loader  = Loader("./resources/models/player1.obj")
-        player21_loader  = Loader("./resources/models/player2.obj")
-        player22_loader  = Loader("./resources/models/player2.obj")
-        suzanne_loader  = Loader("./resources/models/suzanne.obj")
+        tabuleiro_obj = Loader("./resources/models/tabuleiro.obj")
+        player11_obj  = Loader("./resources/models/player1.obj")
+        player12_obj  = Loader("./resources/models/player1.obj")
+        player21_obj  = Loader("./resources/models/player2.obj")
+        player22_obj  = Loader("./resources/models/player2.obj")
+        suzanne_obj   = Loader("./resources/models/suzanne.obj")
 
         shader = Shader("./resources/shaders/VertexShader.shader", "./resources/shaders/FragmentShader.shader")
 
@@ -37,24 +37,24 @@ class App:
         yellow_texture = Texture("./resources/textures/triangles_yellow.png")
 
 
-        self.tabuleiro = Object(tabuleiro_loader, shader, red_texture)
-        self.player11  = Object(player11_loader, shader, blue_texture)
-        self.player12  = Object(player12_loader, shader, blue_texture)
-        self.player21  = Object(player21_loader, shader, yellow_texture)
-        self.player22  = Object(player22_loader, shader, yellow_texture)
-        self.suzanne   = Object(suzanne_loader, shader, red_texture)
+        self.tabuleiro = Object(tabuleiro_obj, shader, red_texture)
+        self.player11  = Object(player11_obj, shader, blue_texture)
+        self.player12  = Object(player12_obj, shader, blue_texture)
+        self.player21  = Object(player21_obj, shader, yellow_texture)
+        self.player22  = Object(player22_obj, shader, yellow_texture)
+        self.suzanne   = Object(suzanne_obj, shader, red_texture)
 
 
         self.suzanne.scale(0.5, 0.5, 0.5)
         self.suzanne.translate(0.0, 0.8, 0.0)
 
-        self.player11.translate(0.8,0.2,0.8)
+        self.player11.translate(0.8,0.2,-0.8)
         self.player11.scale(0.2,0.2,0.2)
 
         self.player12.translate(-0.8,0.2,0.8)
         self.player12.scale(0.2,0.2,0.2)
         
-        self.player21.translate(0.8,0.2,-0.8)
+        self.player21.translate(0.8,0.2,0.8)
         self.player21.scale(0.2,0.2,0.2)
         
         self.player22.translate(-0.8,0.2,-0.8)
@@ -67,11 +67,8 @@ class App:
 
     def set_render_mode(self):
         glEnable(GL_BLEND)
-        # Transparency
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE)
-        # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE) # Transparency
         glEnable(GL_DEPTH_TEST)
-        # glDepthFunc(GL_LESS)
         glEnable(GL_CULL_FACE)
 
     def handle_event(self, event):
@@ -96,7 +93,7 @@ class App:
             self.player12.render(self.camera)
             self.player21.render(self.camera)
             self.player22.render(self.camera)
-            self.suzanne.render(self.camera)
+            # self.suzanne.render(self.camera)
 
     def run(self):
         while True:
