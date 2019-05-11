@@ -8,13 +8,15 @@ from Core.IndexBuffer   import IndexBuffer
 from Core.Texture       import Texture
 
 class Object():
-    def __init__(self, loader):
-        self.vertices = loader.vertices
-        self.indices = loader.indices
-        self.tex_map = loader.tex_map
-        self.normals = loader.normals
-        self.texture = loader.texture
-        self.shader = loader.shader
+    def __init__(self, obj, shader, texture):
+
+        self.indices = obj.indices
+        self.vertices = obj.vertices
+        self.tex_map = obj.tex_map
+        self.normals = obj.normals
+
+        self.texture = texture
+        self.shader = shader
         
         self.va = VertexArray()
         

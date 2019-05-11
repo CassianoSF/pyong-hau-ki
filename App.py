@@ -1,6 +1,9 @@
 import pygame, numpy, pyrr, math, os, string
 from OpenGL.GL import *
 
+from Core.Shader import Shader
+from Core.Texture import Texture
+
 from Object import Object
 from Loader import Loader
 from Camera import Camera
@@ -20,19 +23,26 @@ class App:
         pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.DOUBLEBUF | pygame.OPENGL)
         self.clock = pygame.time.Clock()
 
-        tabuleiro_loader = Loader("./resources/models/tabuleiro.obj","./resources/textures/triangles_blue.png")
-        player11_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
-        player12_loader  = Loader("./resources/models/player1.obj",  "./resources/textures/triangles_yellow.png")
-        player21_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
-        player22_loader  = Loader("./resources/models/player2.obj",  "./resources/textures/triangles_red.png")
-        suzanne_loader  = Loader("./resources/models/suzanne.obj",  "./resources/textures/triangles_red.png")
+        tabuleiro_loader = Loader("./resources/models/tabuleiro.obj")
+        player11_loader  = Loader("./resources/models/player1.obj")
+        player12_loader  = Loader("./resources/models/player1.obj")
+        player21_loader  = Loader("./resources/models/player2.obj")
+        player22_loader  = Loader("./resources/models/player2.obj")
+        suzanne_loader  = Loader("./resources/models/suzanne.obj")
 
-        self.tabuleiro = Object(tabuleiro_loader)
-        self.player11  = Object(player11_loader)
-        self.player12  = Object(player12_loader)
-        self.player21  = Object(player21_loader)
-        self.player22  = Object(player22_loader)
-        self.suzanne  = Object(suzanne_loader)
+        shader = Shader("./resources/shaders/VertexShader.shader", "./resources/shaders/FragmentShader.shader")
+
+        blue_texture = Texture("./resources/textures/triangles_blue.png")
+        red_texture = Texture("./resources/textures/triangles_red.png")
+        yellow_texture = Texture("./resources/textures/triangles_yellow.png")
+
+
+        self.tabuleiro = Object(tabuleiro_loader, shader, red_texture)
+        self.player11  = Object(player11_loader, shader, blue_texture)
+        self.player12  = Object(player12_loader, shader, blue_texture)
+        self.player21  = Object(player21_loader, shader, yellow_texture)
+        self.player22  = Object(player22_loader, shader, yellow_texture)
+        self.suzanne   = Object(suzanne_loader, shader, red_texture)
 
 
         self.suzanne.scale(0.5, 0.5, 0.5)

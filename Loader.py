@@ -7,23 +7,16 @@ from Core.Texture       import Texture
 from Object import Object
 
 class Loader():
-    def __init__(self, objFileName, textureFileName):
-        self.objFileName = objFileName
-        self.textureFileName = textureFileName
+    def __init__(self, objFileName):
         self.vertices = []
         self.indices = []
         self.tex_map = []
         self.normals = []
-        self.loadObj()
-        self.texture = Texture(textureFileName)
-        self.shader = Shader(
-            "./resources/shaders/VertexShader.shader", 
-            "./resources/shaders/FragmentShader.shader"
-        )
+        self.loadObj(objFileName)
 
-    def loadObj(self):
+    def loadObj(self, objFileName):
         try:
-            file = open(self.objFileName)
+            file = open(objFileName)
             temp_vertices = []
             temp_tex_map = []
             temp_normals = []
