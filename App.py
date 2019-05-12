@@ -66,10 +66,10 @@ class App:
         self.player22.translate(-0.8,0.2,-0.8)
         self.player22.scale(0.4,0.4,0.4)
 
-        self.menu   = True
+        self.menu = True
 
-        self.light_1  = Light([-2,2,2],  5, [1,0,0], 0.1, self.camera)
-        self.light_2  = Light([2,-2,-2], 5, [1,1,1], 0.1, self.camera)
+        self.light_1  = Light([0,2, 1], 10, [1,1,1], 0.1, self.camera)
+        self.light_2  = Light([2,-2,-2], 5, [1,0,0], 0.1, self.camera)
         self.light_3  = Light([2,1,2],   5, [1,1,1], 0.1, self.camera)
         self.light_4  = Light([2,2,2],   5, [0,1,0], 0.1, self.camera)
         self.light_5  = Light([2,2,3],   5, [0,0,1], 0.1, self.camera)
