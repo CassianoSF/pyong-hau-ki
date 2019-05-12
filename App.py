@@ -29,8 +29,8 @@ class App:
 
     def load_env(self):
         tabuleiro_obj = Loader("./resources/models/tabuleiro.obj")
-        player1_obj   = Loader("./resources/models/player1.obj")
-        player2_obj   = Loader("./resources/models/player2.obj")
+        player1_obj   = Loader("./resources/models/drone.obj")
+        player2_obj   = Loader("./resources/models/galinha.obj")
         suzanne_obj   = Loader("./resources/models/suzanne.obj")
         sphere_obj    = Loader("./resources/models/sphere.obj")
 
@@ -54,19 +54,18 @@ class App:
         self.suzanne.scale(0.5, 0.5, 0.5)
         self.suzanne.translate(0.0, 0.8, 0.0)
 
-        self.player11.translate(0.8,0.2,-0.8)
-        self.player11.scale(0.2,0.2,0.2)
+        self.player11.translate(0.8,0.1,-0.8)
+        self.player11.scale(0.1,0.1,0.1)
 
-        self.player12.translate(-0.8,0.2,0.8)
-        self.player12.scale(0.2,0.2,0.2)
+        self.player12.translate(-0.8,0.1,0.8)
+        self.player12.scale(0.1,0.1,0.1)
         
         self.player21.translate(0.8,0.2,0.8)
-        self.player21.scale(0.2,0.2,0.2)
+        self.player21.scale(0.4,0.4,0.4)
         
         self.player22.translate(-0.8,0.2,-0.8)
-        self.player22.scale(0.2,0.2,0.2)
+        self.player22.scale(0.4,0.4,0.4)
 
-        self.gui    = Gui(self.window_width, self.window_height)
         self.menu   = True
 
         self.light_1  = Light([-2,2,2],  5, [1,0,0], 0.1, self.camera)
@@ -83,6 +82,7 @@ class App:
             self.light_5
         ]
 
+        self.gui    = Gui(self.window_width, self.window_height, self)
         self.renderer = Renderer(self.lights)
 
     def config_render(self):
@@ -91,6 +91,7 @@ class App:
 
     def handle_event(self, event):
         self.camera.handle_event(event)
+        self.gui.handle_event(event)
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
@@ -101,6 +102,7 @@ class App:
 
     def render(self):
         self.renderer.clear()
+        self.gui.render(self.renderer)
         if not self.menu:
             self.camera.update()
             self.renderer.render_with_lights(self.tabuleiro)
@@ -116,7 +118,6 @@ class App:
             self.light_4.render(self.renderer)
             self.light_5.render(self.renderer)
 
-        self.gui.render(self.renderer)
 
     def run(self):
         clock = pygame.time.Clock()

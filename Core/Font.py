@@ -1,7 +1,7 @@
 from OpenGL.GL import *
 import pygame
 
-class Text:
+class Font:
     def __init__(self, caption, font, r,g,b):
         self.id = glGenTextures(1)
         font = pygame.font.Font('./resources/fonts/'+font+'.ttf', 100)
