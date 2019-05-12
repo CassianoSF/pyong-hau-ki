@@ -8,7 +8,7 @@ from Core.IndexBuffer   import IndexBuffer
 from Core.Texture       import Texture
 
 class Object():
-    def __init__(self, obj, shader, texture):
+    def __init__(self, obj, camera, texture):
 
         self.indices = obj.indices
         self.vertices = obj.vertices
@@ -16,7 +16,7 @@ class Object():
         self.normals = obj.normals
 
         self.texture = texture
-        self.shader = shader
+        self.camera = camera
         
         self.va = VertexArray()
         
@@ -50,7 +50,7 @@ class Object():
     def scale(self, x, y, z):
         self.model['scale'] = [x,y,z]
 
-    def mount_mvp(self, camera):
+    def mount_mvp(self):
         trans_matrix = numpy.transpose(pyrr.matrix44.create_from_translation(self.model['translation']))
         rot_matrix_x = numpy.transpose(pyrr.matrix44.create_from_x_rotation(self.model['rotation'][0]))
         rot_matrix_y = numpy.transpose(pyrr.matrix44.create_from_y_rotation(self.model['rotation'][1]))
@@ -60,40 +60,26 @@ class Object():
         self.model_matrix = numpy.matmul(numpy.matmul(trans_matrix,rot_matrix),scale_matrix)
 
         self.view_matrix = numpy.transpose(pyrr.matrix44.create_look_at(
-            numpy.array(camera.view['position'], dtype="float32"),
-            numpy.array(camera.view['target'],   dtype="float32"),
-            numpy.array(camera.view['up'],       dtype="float32")
+            numpy.array(self.camera.view['position'], dtype="float32"),
+            numpy.array(self.camera.view['target'],   dtype="float32"),
+            numpy.array(self.camera.view['up'],       dtype="float32")
         ))
 
-        if camera.orthogonal:
+        if self.camera.orthogonal:
             self.proj_matrix = numpy.transpose(
                 pyrr.matrix44.create_orthogonal_projection_matrix(
                     -6, 6, -3, 3, 0.001, 300, dtype=None))
         
         else:
             self.proj_matrix = numpy.transpose(pyrr.matrix44.create_perspective_projection(
-                camera.projection['fovy'],
-                camera.projection['aspect'],
-                camera.projection['near'],
-                camera.projection['far'],
-                camera.projection['dtype']
+                self.camera.projection['fovy'],
+                self.camera.projection['aspect'],
+                self.camera.projection['near'],
+                self.camera.projection['far'],
+                self.camera.projection['dtype']
             ))
 
-
-    def render(self, camera):
-
-        self.mount_mvp(camera)
-
-        self.shader.add_uniform_matrix_4f("model", self.model_matrix)
-        self.shader.add_uniform_matrix_4f("view", self.view_matrix)
-        self.shader.add_uniform_matrix_4f("projection", self.proj_matrix)
-        self.shader.add_uniform_3f("LightPosition1", [ 20.,  20.,  20.])
-        self.shader.add_uniform_3f("LightPosition2", [ 20.,  20.,  20.])
-        self.shader.add_uniform_3f("LightPosition3", [ 20.,  20.,  20.])
-
+    def bind(self):
         self.texture.bind()
-        self.shader.bind()
         self.va.bind()
         self.ib.bind()
-    
-        glDrawElements(GL_TRIANGLES, self.va.size, GL_UNSIGNED_INT, None)

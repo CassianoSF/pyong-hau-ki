@@ -1,7 +1,7 @@
 from OpenGL.GL import *
 
 class Shader:
-    def __init__(self, frag_path, vert_path):
+    def __init__(self, frag_path, vert_path, lights=[]):
         self.id = glCreateProgram()
         vertex_shader = glCreateShader(GL_VERTEX_SHADER)
         fragment_shader = glCreateShader(GL_FRAGMENT_SHADER)
@@ -13,6 +13,31 @@ class Shader:
                 frag_source = frag_file.read()
         except IOError:
             print(".shaders file not found.")
+
+
+        if(lights):
+            for index, light in enumerate(lights):
+                lines = vert_source.splitlines()
+                i = lines.index("// LIGHT DIRECTION OUT")
+                lines.insert(i, "out vec3 LightDirection_cameraspace" + str(index) + ";")
+                i = lines.index("// LIGHT POSITIONS")
+                lines.insert(i, "uniform vec3 LightPosition" + str(index) + ";")
+                i = lines.index("// LIGHT DIRECTION")
+                lines.insert(i,"LightDirection_cameraspace"+str(index)+" = ( view * vec4(LightPosition"+str(index)+",1)).xyz - EyeDirection_cameraspace;")
+                vert_source = "\n".join(lines)
+
+                lines = frag_source.splitlines()
+                i = lines.index("// LIGHT DIRECTION IN")
+                lines.insert(i, "in vec3 LightDirection_cameraspace"+str(index)+";")
+                i = lines.index("// LIGHT POSITION")
+                lines.insert(i, "uniform vec3 LightPosition"+str(index)+";")
+                i = lines.index("// LIGHT COLOR")
+                lines.insert(i, "uniform vec3 LightColor"+str(index)+";")
+                i = lines.index("// LIGHT POWER")
+                lines.insert(i, "uniform int LightPower"+str(index)+";")
+                i = lines.index("// COLORS")
+                lines.insert(i, "color += calcLight(LightPosition"+str(index)+", LightColor"+str(index)+", LightPower"+str(index)+", LightDirection_cameraspace"+str(index)+");")
+                frag_source = "\n".join(lines)
 
         glShaderSource(vertex_shader, vert_source)
         glShaderSource(fragment_shader, frag_source)
