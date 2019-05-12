@@ -16,12 +16,17 @@ WINDOW_HEIGHT=620
 
 class App:
     def __init__(self):
+        self.config_screen()
+        self.load_env()
+        self.config_render()
+
+    def config_screen(self):
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("APP")
         pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT), pygame.DOUBLEBUF | pygame.OPENGL)
-        self.clock = pygame.time.Clock()
 
+    def load_env(self):
         tabuleiro_obj = Loader("./resources/models/tabuleiro.obj")
         player11_obj  = Loader("./resources/models/player1.obj")
         player12_obj  = Loader("./resources/models/player1.obj")
@@ -30,7 +35,6 @@ class App:
         suzanne_obj   = Loader("./resources/models/suzanne.obj")
 
         shader = Shader("./resources/shaders/LightVertex.shader", "./resources/shaders/LightFragment.shader")
-
         blue_texture = Texture("./resources/textures/triangles_blue.png")
         red_texture = Texture("./resources/textures/triangles_red.png")
         yellow_texture = Texture("./resources/textures/triangles_yellow.png")
@@ -61,9 +65,7 @@ class App:
         self.gui = Gui(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.menu = True
 
-        self.render_config()
-
-    def render_config(self):
+    def config_render(self):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
 
@@ -92,11 +94,12 @@ class App:
             # self.suzanne.render(self.camera)
 
     def run(self):
+        clock = pygame.time.Clock()
         while True:
             [self.handle_event(event) for event in pygame.event.get()]
-            self.clock.tick(60)
             self.render()
             pygame.display.flip()
+            clock.tick(60)
 
 if __name__ == "__main__":
     App().run()

@@ -1,11 +1,5 @@
-import pygame, sys, os
-import pprint
-import importlib
-import math
-from pygame.locals import *
 from OpenGL.GL import *
-from OpenGL.GLU import *
-
+import pygame
 
 class Text:
     def __init__(self, caption, font, r,g,b):

@@ -2,14 +2,14 @@ import math
 
 from OpenGL.GL import *
 
-from Core.Shader import Shader
+from Core.Shader  import Shader
 from Core.Texture import Texture
+from Core.Text    import Text
 
 from GuiObject import GuiObject
 from Object    import Object
 from Camera    import Camera
 from Loader    import Loader
-from Text      import Text
 
 
 class Button:

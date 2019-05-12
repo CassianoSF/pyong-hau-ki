@@ -106,8 +106,8 @@ class Camera:
             self.move_down(0.10)
 
         if(pressed[pygame.K_1]):
-            self.move_to(1, 6, 5, 10)
+            self.move_to(1, 4, 4, 10)
         if(pressed[pygame.K_2]):
-            self.move_to(1, 6, -5, 10)
+            self.move_to(1, 4, -4, 10)
         if(pressed[pygame.K_3]):
-            self.move_to(2, 7, 0, 10)
+            self.move_to(3, 5, 0, 10)
