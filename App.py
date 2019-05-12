@@ -69,14 +69,18 @@ class App:
         self.gui    = Gui(self.window_width, self.window_height)
         self.menu   = True
 
-        self.red_light   = Light([-20,20,20], 1000, [1,0,0], 1)
-        self.green_light = Light([20,-20,-20], 1000, [1,1,1], 1)
-        self.blue_light  = Light([20,20,20], 1000, [1,1,1], 1)
+        self.light_1  = Light([-2,2,2],  5, [1,0,0], 0.1, self.camera)
+        self.light_2  = Light([2,-2,-2], 5, [1,1,1], 0.1, self.camera)
+        self.light_3  = Light([2,1,2],   5, [1,1,1], 0.1, self.camera)
+        self.light_4  = Light([2,2,2],   5, [0,1,0], 0.1, self.camera)
+        self.light_5  = Light([2,2,3],   5, [0,0,1], 0.1, self.camera)
 
         self.lights = [
-            # self.red_light,
-            self.green_light,
-            self.blue_light
+            self.light_1,
+            self.light_2,
+            self.light_3,
+            self.light_4,
+            self.light_5
         ]
 
         self.renderer = Renderer(self.lights)
@@ -106,6 +110,11 @@ class App:
             self.renderer.render_with_lights(self.player22)
             self.renderer.render_with_lights(self.sphere)
             self.renderer.render_with_lights(self.suzanne)
+            self.light_1.render(self.renderer)
+            self.light_2.render(self.renderer)
+            self.light_3.render(self.renderer)
+            self.light_4.render(self.renderer)
+            self.light_5.render(self.renderer)
 
         self.gui.render(self.renderer)
 

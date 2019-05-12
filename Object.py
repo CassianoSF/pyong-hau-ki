@@ -8,7 +8,8 @@ from Core.IndexBuffer   import IndexBuffer
 from Core.Texture       import Texture
 
 class Object():
-    def __init__(self, obj, camera, texture):
+    def __init__(self, obj, camera, texture, color=[1,1,1]):
+        self.color = color
 
         self.indices = obj.indices
         self.vertices = obj.vertices

@@ -27,8 +27,8 @@ class Button:
         self.btn.translate(position[0], position[1], position[2])
 
     def render(self, renderer):
-        renderer.with_transparency(self.text)
-        renderer.with_transparency(self.btn)
+        renderer.render_with_transparency(self.text)
+        renderer.render_with_transparency(self.btn)
         
 class Gui:
     def __init__(self, window_width, window_height):
@@ -72,7 +72,7 @@ class Gui:
 
     def render(self, renderer):
         if self.menu:
-            renderer.with_transparency(self.start_menu)
+            renderer.render_with_transparency(self.start_menu)
             self.pump_menu()
         else:
             self.btn_light_1_x_l.render(renderer)

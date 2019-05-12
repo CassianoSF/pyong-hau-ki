@@ -16,7 +16,7 @@ class Renderer:
         shader.add_uniform_matrix_4f("view", obj.view_matrix)
         shader.add_uniform_matrix_4f("projection", obj.proj_matrix)
 
-    def simple(self, obj):
+    def render_with_texture(self, obj):
         obj.mount_mvp()
         self.add_mvp(self.shader_simple, obj)
         self.shader_simple.bind()
@@ -24,7 +24,7 @@ class Renderer:
         glDrawElements(GL_TRIANGLES, obj.va.size, GL_UNSIGNED_INT, None)
 
 
-    def with_transparency(self, obj):
+    def render_with_transparency(self, obj):
         # transparency
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -37,9 +37,10 @@ class Renderer:
         glDisable(GL_BLEND)
 
 
-    def solid_color(self, obj):
+    def render_solid_color(self, obj):
         obj.mount_mvp()
         self.add_mvp(self.shader_solid_color, obj)
+        self.shader_solid_color.add_uniform_3f("rgb", obj.color)
         self.shader_solid_color.bind()
         obj.bind()
         glDrawElements(GL_TRIANGLES, obj.va.size, GL_UNSIGNED_INT, None)
