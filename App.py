@@ -12,11 +12,10 @@ from Gui    import Gui
 import threading
 
 WINDOW_WIDTH=1280
-WINDOW_HEIGHT=720
+WINDOW_HEIGHT=620
 
 class App:
     def __init__(self):
-
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("APP")
@@ -30,12 +29,11 @@ class App:
         player22_obj  = Loader("./resources/models/player2.obj")
         suzanne_obj   = Loader("./resources/models/suzanne.obj")
 
-        shader = Shader("./resources/shaders/VertexShader.shader", "./resources/shaders/FragmentShader.shader")
+        shader = Shader("./resources/shaders/LightVertex.shader", "./resources/shaders/LightFragment.shader")
 
         blue_texture = Texture("./resources/textures/triangles_blue.png")
         red_texture = Texture("./resources/textures/triangles_red.png")
         yellow_texture = Texture("./resources/textures/triangles_yellow.png")
-
 
         self.tabuleiro = Object(tabuleiro_obj, shader, red_texture)
         self.player11  = Object(player11_obj, shader, blue_texture)
@@ -43,7 +41,6 @@ class App:
         self.player21  = Object(player21_obj, shader, yellow_texture)
         self.player22  = Object(player22_obj, shader, yellow_texture)
         self.suzanne   = Object(suzanne_obj, shader, red_texture)
-
 
         self.suzanne.scale(0.5, 0.5, 0.5)
         self.suzanne.translate(0.0, 0.8, 0.0)
@@ -62,12 +59,11 @@ class App:
 
         self.camera = Camera(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.gui = Gui(WINDOW_WIDTH, WINDOW_HEIGHT)
-        self.set_render_mode()
         self.menu = True
 
-    def set_render_mode(self):
-        glEnable(GL_BLEND)
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE) # Transparency
+        self.render_config()
+
+    def render_config(self):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
 

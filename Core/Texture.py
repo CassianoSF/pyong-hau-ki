@@ -6,13 +6,13 @@ class Texture():
         self.id = glGenTextures(1)
         tex = pygame.image.load(path)
         tex_surface = pygame.image.tostring(tex, 'RGBA')
-        tex_width, tex_height = tex.get_size()
+        width, height = tex.get_size()
         glBindTexture(GL_TEXTURE_2D, self.id)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tex_width, tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_surface) 
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex_surface) 
         glBindTexture(GL_TEXTURE_2D, 0)
 
     def delete(self):

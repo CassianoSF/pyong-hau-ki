@@ -7,9 +7,8 @@ from Core.VertexArray   import VertexArray
 from Core.IndexBuffer   import IndexBuffer
 from Core.Texture       import Texture
 
-class Object():
+class GuiObject():
     def __init__(self, obj, shader, texture):
-
         self.indices = obj.indices
         self.vertices = obj.vertices
         self.tex_map = obj.tex_map
