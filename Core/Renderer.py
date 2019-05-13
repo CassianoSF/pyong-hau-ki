@@ -11,14 +11,16 @@ class Renderer:
         self.shader_with_light  = Shader("./resources/shaders/LightVertex.shader", "./resources/shaders/LightFragment.shader", lights=lights)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     def add_mvp(self, shader, obj):
+        obj.mount_mvp()
         shader.add_uniform_matrix_4f("model", obj.model_matrix)
         shader.add_uniform_matrix_4f("view", obj.view_matrix)
         shader.add_uniform_matrix_4f("projection", obj.proj_matrix)
 
     def render_with_texture(self, obj):
-        obj.mount_mvp()
         self.add_mvp(self.shader_simple, obj)
         self.shader_simple.bind()
         obj.bind()
@@ -27,10 +29,7 @@ class Renderer:
 
     def render_with_transparency(self, obj):
         # transparency
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_BLEND)
-        obj.mount_mvp()
         self.add_mvp(self.shader_transparent, obj)
         self.shader_transparent.bind()
         obj.bind()
@@ -39,7 +38,6 @@ class Renderer:
 
 
     def render_solid_color(self, obj):
-        obj.mount_mvp()
         self.add_mvp(self.shader_solid_color, obj)
         self.shader_solid_color.add_uniform_3f("rgb", obj.color)
         self.shader_solid_color.bind()
@@ -48,7 +46,6 @@ class Renderer:
 
 
     def render_with_lights(self, obj):
-        obj.mount_mvp()
         self.add_mvp(self.shader_with_light, obj)
         for index, light in enumerate(self.lights):
             self.shader_with_light.add_uniform_3f("LightPosition" + str(index), light.position)

@@ -46,10 +46,10 @@ class App:
         self.sphere    = Object(sphere_obj, self.camera, red_texture)
 
         self.sphere.scale(0.5, 0.5, 0.5)
-        self.sphere.translate(0, 2, 0)
+        self.sphere.translate(0, -4, 0)
 
         self.suzanne.scale(0.5, 0.5, 0.5)
-        self.suzanne.translate(0.0, 0.8, 0.0)
+        self.suzanne.translate(0.0, -2, 0.0)
 
         self.player11.translate(0.8,0.1,-0.8)
         self.player11.scale(0.1,0.1,0.1)
@@ -79,7 +79,7 @@ class App:
             self.light_5
         ]
 
-        self.gui    = Gui(self.window_width, self.window_height, self)
+        self.gui = Gui(self.window_width, self.window_height, self)
         self.renderer = Renderer(self.lights)
 
     def handle_event(self, event):

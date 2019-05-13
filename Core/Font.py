@@ -4,7 +4,7 @@ import pygame
 class Font:
     def __init__(self, caption, font, r,g,b):
         self.id = glGenTextures(1)
-        font = pygame.font.Font('./resources/fonts/'+font+'.ttf', 100)
+        font = pygame.font.Font('./resources/fonts/'+font+'.ttf', 1000)
         caption = caption
         textsurface = font.render(caption, False, (r*255,g*255,b*255,0))
         tex = pygame.image.tostring(textsurface, 'RGBA')
