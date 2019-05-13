@@ -1,10 +1,4 @@
-import pygame, numpy, pyrr, math, os, string
-from OpenGL.GL import *
-
-from Core.Shader        import Shader
-from Core.Texture       import Texture
-
-from Object import Object
+import numpy
 
 class Loader():
     def __init__(self, objFileName):

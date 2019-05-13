@@ -1,11 +1,8 @@
-import pygame, numpy, pyrr, math, os, string
-from OpenGL.GL import *
+import numpy, pyrr
 
-from Core.Shader        import Shader
-from Core.VertexBuffer  import VertexBuffer
 from Core.VertexArray   import VertexArray
+from Core.VertexBuffer  import VertexBuffer
 from Core.IndexBuffer   import IndexBuffer
-from Core.Texture       import Texture
 
 class Object():
     def __init__(self, obj, camera, texture, color=[1,1,1]):

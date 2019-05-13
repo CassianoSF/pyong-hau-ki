@@ -1,4 +1,3 @@
-from Core.Shader import Shader
 from Core.Texture import Texture
 
 from Object import Object

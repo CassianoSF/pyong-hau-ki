@@ -1,5 +1,4 @@
 from OpenGL.GL import *
-import pygame
 
 from Core.Shader import Shader
 
@@ -10,6 +9,8 @@ class Renderer:
         self.shader_transparent = Shader("./resources/shaders/SimpleVertex.shader", "./resources/shaders/TransparencyFragment.shader")
         self.shader_solid_color = Shader("./resources/shaders/SolidColorVertex.shader", "./resources/shaders/SolidColorFragment.shader")
         self.shader_with_light  = Shader("./resources/shaders/LightVertex.shader", "./resources/shaders/LightFragment.shader", lights=lights)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
 
     def add_mvp(self, shader, obj):
         shader.add_uniform_matrix_4f("model", obj.model_matrix)

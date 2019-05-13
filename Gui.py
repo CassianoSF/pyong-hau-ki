@@ -2,7 +2,6 @@ import math, pygame
 
 from OpenGL.GL import *
 
-from Core.Shader  import Shader
 from Core.Texture import Texture
 from Core.Font    import Font
 

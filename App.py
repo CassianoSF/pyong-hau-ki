@@ -1,7 +1,5 @@
 import pygame, os
-from OpenGL.GL import *
 
-from Core.Shader   import Shader
 from Core.Texture  import Texture
 from Core.Renderer import Renderer
 
@@ -17,7 +15,6 @@ class App:
     def __init__(self):
         self.config_screen()
         self.load_env()
-        self.config_render()
 
     def config_screen(self):
         self.window_width  = 1280
@@ -84,10 +81,6 @@ class App:
 
         self.gui    = Gui(self.window_width, self.window_height, self)
         self.renderer = Renderer(self.lights)
-
-    def config_render(self):
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_CULL_FACE)
 
     def handle_event(self, event):
         self.camera.handle_event(event)
