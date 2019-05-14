@@ -26,16 +26,17 @@ void main(){
     gl_Position =  MVP * vec4(vertexPositions,1);
     
     // Position of the vertex, in worldspace : model * position
-    triangle_position = (model * vec4(vertexPositions,1)).xyz;
+    triangle_position = (vec4(vertexPositions,1) * model).xyz;
     
     // Vector that goes from the vertex to the camera, in camera space.
-    EyeDirection_cameraspace = vec3(1,1,1) - ( view * model * vec4(vertexPositions,1)).xyz;
+    EyeDirection_cameraspace = vec3(1,1,1) - ( view * (vec4(vertexPositions,1) * model) ).xyz;
 
     // Vector that goes from the vertex to the light, in camera space. model is ommited because it's identity.
 // LIGHT DIRECTION
     
     // Normal of the the vertex, in camera space
-    Normal_cameraspace = ( view * model * vec4(vertexNormals,0)).xyz;
+    Normal_cameraspace = ( view * vec4(vertexNormals,0)).xyz;
+    // Normal_cameraspace = mat3(transpose(inverse(model))) * vertexNormals;
     
     // UV of the vertex. No special space for this one.
     UV = vertexUVs;

@@ -45,11 +45,10 @@ vec3 calcLight(vec3 LightPos, vec3 LightColor, int LightPower, vec3 LightDirecti
     
     vec3 ambient = MaterialAmbientColor;
     vec3 diffuse = MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance);
-    vec3 specular = MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,32) / (distance*distance);
+    vec3 specular = MaterialSpecularColor * LightColor * LightPower * cosTheta * pow(cosAlpha,32) / (distance*distance);
     return ambient + diffuse + specular;
 }
 
 void main(){
-    vec3 LightColor = vec3(1,1,1);
 // COLORS
 }
