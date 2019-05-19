@@ -25,26 +25,35 @@ class App:
         pygame.display.set_mode((self.window_width,self.window_height), pygame.DOUBLEBUF | pygame.OPENGL)
 
     def load_env(self):
+        cube_obj = Loader("./resources/models/cube2.obj")
         tabuleiro_obj = Loader("./resources/models/tabuleiro.obj")
         player1_obj   = Loader("./resources/models/drone.obj")
         player2_obj   = Loader("./resources/models/galinha.obj")
         suzanne_obj   = Loader("./resources/models/suzanne.obj")
         sphere_obj    = Loader("./resources/models/sphere.obj")
 
+        space_texture   = Texture("./resources/textures/space.png")
+        galinha_texture   = Texture("./resources/textures/galinha.png")
+        wood_texture   = Texture("./resources/textures/wood.png")
+        mech_texture   = Texture("./resources/textures/mech.png")
         blue_texture   = Texture("./resources/textures/triangles_blue.png")
         red_texture    = Texture("./resources/textures/triangles_red.png")
         yellow_texture = Texture("./resources/textures/triangles_yellow.png")
 
         self.camera = Camera(self.window_width, self.window_height)
 
-        self.tabuleiro = Object(tabuleiro_obj, self.camera, red_texture)
-        self.player11  = Object(player1_obj, self.camera, blue_texture)
-        self.player12  = Object(player1_obj, self.camera, blue_texture)
-        self.player21  = Object(player2_obj, self.camera, yellow_texture)
-        self.player22  = Object(player2_obj, self.camera, yellow_texture)
-        self.suzanne   = Object(suzanne_obj, self.camera, red_texture)
-        self.sphere    = Object(sphere_obj, self.camera, red_texture)
+        self.cube      = Object(cube_obj,      self.camera, space_texture)
+        self.tabuleiro = Object(tabuleiro_obj, self.camera, wood_texture)
+        self.player11  = Object(player1_obj,   self.camera, mech_texture)
+        self.player12  = Object(player1_obj,   self.camera, mech_texture)
+        self.player21  = Object(player2_obj,   self.camera, galinha_texture)
+        self.player22  = Object(player2_obj,   self.camera, galinha_texture)
+        self.suzanne   = Object(suzanne_obj,   self.camera, red_texture)
+        self.sphere    = Object(sphere_obj,    self.camera, red_texture)
 
+
+
+        self.cube.scale(3,3,3)
         self.sphere.scale(0.5, 0.5, 0.5)
         self.sphere.translate(0, -4, 0)
 
@@ -66,10 +75,10 @@ class App:
         self.menu = True
 
         self.light_1  = Light([0,2, 1], 10, [1,1,1], 0.1, self.camera)
-        self.light_2  = Light([2,-2,-2], 5, [1,0,0], 0.1, self.camera)
-        self.light_3  = Light([2,1,2],   5, [1,1,1], 0.1, self.camera)
-        self.light_4  = Light([2,2,2],   5, [0,1,0], 0.1, self.camera)
-        self.light_5  = Light([2,2,3],   5, [0,0,1], 0.1, self.camera)
+        self.light_2  = Light([1,-1,1], 5, [1,0,0], 0.1, self.camera)
+        self.light_3  = Light([1,1,-2],   5, [1,1,1], 0.1, self.camera)
+        self.light_4  = Light([2,1,2],   5, [0,1,0], 0.1, self.camera)
+        self.light_5  = Light([2,2,-1],   5, [0,0,1], 0.1, self.camera)
 
         self.lights = [
             self.light_1,
@@ -103,13 +112,15 @@ class App:
             self.renderer.render_with_lights(self.player12)
             self.renderer.render_with_lights(self.player21)
             self.renderer.render_with_lights(self.player22)
-            self.renderer.render_with_lights(self.sphere)
-            self.renderer.render_with_lights(self.suzanne)
+            self.renderer.render_with_lights(self.cube)
+            # self.renderer.render_with_lights(self.sphere)
+            # self.renderer.render_with_lights(self.suzanne)
             self.light_1.render(self.renderer)
             self.light_2.render(self.renderer)
             self.light_3.render(self.renderer)
             self.light_4.render(self.renderer)
             self.light_5.render(self.renderer)
+
 
 
     def run(self):
