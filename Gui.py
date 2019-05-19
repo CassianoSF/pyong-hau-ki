@@ -68,8 +68,8 @@ class Gui:
         quad_obj  = Loader("./resources/models/quad.obj")
         press_to_play = Font(text, "boston_traffic", 1, 1, 1)
 
-        self.start_menu  = Label("Press enter to play", "kashima", 30,  [1,1,1], [0,0,0],    self.camera)
-        self.logo        = Label("Pong Hau Ki",         "kashima", 100, [1,1,1], [-1.5,0,0], self.camera)
+        self.start_menu  = Label("Press enter to play", "kashima", 30,  [1,1,1], [ 0.5,0,0],    self.camera)
+        self.logo        = Label("Pong Hau Ki",         "kashima", 100, [1,1,1], [-0.5,0,0], self.camera)
 
 
         lx = str(round(app.lights[0].position[0], 2))

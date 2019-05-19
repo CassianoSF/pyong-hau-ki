@@ -15,6 +15,13 @@ class App:
     def __init__(self):
         self.config_screen()
         self.load_env()
+        self.load_sound()
+
+    def load_sound(self):
+        self.sound = {}
+        self.sound['next'] = pygame.mixer.Sound('./resources/sounds/whoosh1.wav')
+        pygame.mixer.music.load('./resources/sounds/musica_menu.wav')
+        pygame.mixer.music.play()
 
     def config_screen(self):
         self.window_width  = 1280
@@ -25,40 +32,39 @@ class App:
         pygame.display.set_mode((self.window_width,self.window_height), pygame.DOUBLEBUF | pygame.OPENGL)
 
     def load_env(self):
-        cube_obj = Loader("./resources/models/cube2.obj")
+        cube_obj = Loader("./resources/models/sphere2.obj")
         tabuleiro_obj = Loader("./resources/models/tabuleiro.obj")
         player1_obj   = Loader("./resources/models/drone.obj")
         player2_obj   = Loader("./resources/models/galinha.obj")
-        suzanne_obj   = Loader("./resources/models/suzanne.obj")
-        sphere_obj    = Loader("./resources/models/sphere.obj")
+        # suzanne_obj   = Loader("./resources/models/suzanne.obj")
+        # sphere_obj    = Loader("./resources/models/sphere.obj")
 
-        space_texture   = Texture("./resources/textures/space.png")
-        galinha_texture   = Texture("./resources/textures/galinha.png")
-        wood_texture   = Texture("./resources/textures/wood.png")
-        mech_texture   = Texture("./resources/textures/mech.png")
-        blue_texture   = Texture("./resources/textures/triangles_blue.png")
-        red_texture    = Texture("./resources/textures/triangles_red.png")
-        yellow_texture = Texture("./resources/textures/triangles_yellow.png")
+        space_texture    = Texture("./resources/textures/space.png")
+        galinha_texture  = Texture("./resources/textures/galinha.png")
+        wood_texture     = Texture("./resources/textures/wood.png")
+        mech_texture     = Texture("./resources/textures/mech.png")
+        # blue_texture     = Texture("./resources/textures/triangles_blue.png")
+        # red_texture      = Texture("./resources/textures/triangles_red.png")
+        # yellow_texture   = Texture("./resources/textures/triangles_yellow.png")
 
         self.camera = Camera(self.window_width, self.window_height)
 
-        self.cube      = Object(cube_obj,      self.camera, space_texture)
+        self.background      = Object(cube_obj,      self.camera, space_texture)
         self.tabuleiro = Object(tabuleiro_obj, self.camera, wood_texture)
         self.player11  = Object(player1_obj,   self.camera, mech_texture)
         self.player12  = Object(player1_obj,   self.camera, mech_texture)
         self.player21  = Object(player2_obj,   self.camera, galinha_texture)
         self.player22  = Object(player2_obj,   self.camera, galinha_texture)
-        self.suzanne   = Object(suzanne_obj,   self.camera, red_texture)
-        self.sphere    = Object(sphere_obj,    self.camera, red_texture)
+        # self.suzanne   = Object(suzanne_obj,   self.camera, red_texture)
+        # self.sphere    = Object(sphere_obj,    self.camera, red_texture)
 
 
+        self.background.scale(5, 5, 5)
+        # self.sphere.scale(0.5, 0.5, 0.5)
+        # self.sphere.translate(0, -4, 0)
 
-        self.cube.scale(3,3,3)
-        self.sphere.scale(0.5, 0.5, 0.5)
-        self.sphere.translate(0, -4, 0)
-
-        self.suzanne.scale(0.5, 0.5, 0.5)
-        self.suzanne.translate(0.0, -2, 0.0)
+        # self.suzanne.scale(0.5, 0.5, 0.5)
+        # self.suzanne.translate(0.0, -2, 0.0)
 
         self.player11.translate(0.8,0.1,-0.8)
         self.player11.scale(0.1,0.1,0.1)
@@ -99,6 +105,8 @@ class App:
             quit()
         if event.type==pygame.KEYDOWN:
             if event.key==pygame.K_RETURN:
+                pygame.mixer.music.load('./resources/sounds/musica_tema.wav')
+                pygame.mixer.music.play()
                 self.menu = False
                 self.gui.game_start()
 
@@ -112,7 +120,7 @@ class App:
             self.renderer.render_with_lights(self.player12)
             self.renderer.render_with_lights(self.player21)
             self.renderer.render_with_lights(self.player22)
-            self.renderer.render_with_lights(self.cube)
+            self.renderer.render_with_lights(self.background)
             # self.renderer.render_with_lights(self.sphere)
             # self.renderer.render_with_lights(self.suzanne)
             self.light_1.render(self.renderer)
