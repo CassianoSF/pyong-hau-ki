@@ -29,7 +29,7 @@ void main(){
     triangle_position = (vec4(vertexPositions,1) * model).xyz;
     
     // Vector that goes from the vertex to the camera, in camera space.
-    EyeDirection_cameraspace = vec3(1,1,1) - ( view * (vec4(vertexPositions,1) * model) ).xyz;
+    EyeDirection_cameraspace = - ( view * (vec4(vertexPositions,1) * model) ).xyz;
 
     // Vector that goes from the vertex to the light, in camera space. model is ommited because it's identity.
 // LIGHT DIRECTION

@@ -18,16 +18,6 @@ class Camera:
         self.orthogonal = False
         self.animacao_inicial = True
 
-    # def spin(self, degrees):
-    #     rotation = [
-    #         [ math.cos(degrees), 0.0, math.sin(degrees)],
-    #         [               0.0, 1.0, 0.0              ],
-    #         [-math.sin(degrees), 1.0, math.cos(degrees)]
-    #     ]
-    #     rotation = numpy.matrix(rotation, dtype='float32')
-    #     new_view = numpy.array(numpy.dot(rotation, self.view['up'])).flatten()
-    #     self.view['up'] = new_view
-
     def move_up(self, amount):
         self.view['position'][1] += amount
 
@@ -89,11 +79,6 @@ class Camera:
                 'target':   [0.0, 0.0, 0.0],
                 'up':       [0.0, 1.0, 0.0]
             }
-
-        # if pressed[pygame.K_LEFT]:
-        #     self.spin(0.001)
-        # if pressed[pygame.K_RIGHT]:
-        #     self.spin(-0.001)
 
         if pressed[pygame.K_a]:
             self.move_left(0.10)

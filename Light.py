@@ -16,5 +16,9 @@ class Light:
         self.sphere.scale(radius, radius, radius)
         self.sphere.translate(position[0],position[1],position[2])
 
+    def set_position(self, position):
+        self.position = position
+        self.sphere.model['translation'] = position
+
     def render(self, renderer):
         renderer.render_solid_color(self.sphere)

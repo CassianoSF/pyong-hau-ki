@@ -9,7 +9,6 @@ from Object    import Object
 from Camera    import Camera
 from Loader    import Loader
 
-
 class Button:
     def __init__(self, caption, font_size, color, position, camera):
         self.color = color
@@ -34,6 +33,14 @@ class Button:
         self.btn.scale(self.font_size*0.1*len(caption)/10, 1, self.font_size*0.2/10)
         self.text.texture.delete
         self.text.texture = text
+
+    def click(self, event, app):
+        pos_x = 6*(event.pos[0]/app.window_width*2 -1)
+        pos_y = 3*(-(event.pos[1]/app.window_height*2 -1))
+        return (
+            self.position[0]-0.15 <= -pos_y <= self.position[0]+0.15 and 
+            self.position[2]-0.4  <= -pos_x <= self.position[2]+0.4
+        )
 
     def render(self, renderer):
         renderer.render_with_transparency(self.text)
@@ -72,13 +79,13 @@ class Gui:
         self.logo        = Label("Pong Hau Ki",         "kashima", 100, [1,1,1], [-0.5,0,0], self.camera)
 
 
-        lx = str(round(app.lights[0].position[0], 2))
-        ly = str(round(app.lights[0].position[1], 2))
-        lz = str(round(app.lights[0].position[2], 2))
+        lx = str(round(app.lights[1].position[0], 2))
+        ly = str(round(app.lights[1].position[1], 2))
+        lz = str(round(app.lights[1].position[2], 2))
 
-        lr = str(round(app.lights[0].color[0]*255, 2))
-        lg = str(round(app.lights[0].color[1]*255, 2))
-        lb = str(round(app.lights[0].color[2]*255, 2))
+        lr = str(round(app.lights[1].color[0]*255, 2))
+        lg = str(round(app.lights[1].color[1]*255, 2))
+        lb = str(round(app.lights[1].color[2]*255, 2))
 
         self.btn_light_1_x_l = Button(" < ",     10, [0,0,0], [2.7, 0, -3.4], self.camera)
         self.btn_light_1_x   = Button(lx,        10, [0,0,0], [2.7, 0, -4.4], self.camera)
@@ -130,144 +137,118 @@ class Gui:
         ]
 
     def handle_event(self, event):
-        # COISA LINDA
         if(event.type == pygame.MOUSEBUTTONDOWN):
-            pos_x = 6*(event.pos[0]/self.app.window_width*2 -1)
-            pos_y = 3*(-(event.pos[1]/self.app.window_height*2 -1))
-            if self.btn_light_1_x_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_x_r.position[0]+0.15 and self.btn_light_1_x_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_x_r.position[2]+0.4:
-                self.btn_light_1_x_r_down = True
+            self.btn_light_1_x_r_down = self.btn_light_1_x_r.click(event, self.app)
+            self.btn_light_1_y_r_down = self.btn_light_1_y_r.click(event, self.app)
+            self.btn_light_1_z_r_down = self.btn_light_1_z_r.click(event, self.app)
 
-            if self.btn_light_1_y_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_y_r.position[0]+0.15 and self.btn_light_1_y_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_y_r.position[2]+0.4:
-                self.btn_light_1_y_r_down = True
-
-            if self.btn_light_1_z_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_z_r.position[0]+0.15 and self.btn_light_1_z_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_z_r.position[2]+0.4:
-                self.btn_light_1_z_r_down = True
+            self.btn_light_1_x_l_down = self.btn_light_1_x_l.click(event, self.app)
+            self.btn_light_1_y_l_down = self.btn_light_1_y_l.click(event, self.app)
+            self.btn_light_1_z_l_down = self.btn_light_1_z_l.click(event, self.app)
 
 
-            if self.btn_light_1_x_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_x_l.position[0]+0.15 and self.btn_light_1_x_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_x_l.position[2]+0.4:
-                self.btn_light_1_x_l_down = True
+            self.btn_light_1_r_r_down = self.btn_light_1_r_r.click(event, self.app)
+            self.btn_light_1_g_r_down = self.btn_light_1_g_r.click(event, self.app)
+            self.btn_light_1_b_r_down = self.btn_light_1_b_r.click(event, self.app)
 
-            if self.btn_light_1_y_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_y_l.position[0]+0.15 and self.btn_light_1_y_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_y_l.position[2]+0.4:
-                self.btn_light_1_y_l_down = True
-
-            if self.btn_light_1_z_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_z_l.position[0]+0.15 and self.btn_light_1_z_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_z_l.position[2]+0.4:
-                self.btn_light_1_z_l_down = True
-
-
-
-            if self.btn_light_1_r_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_r_r.position[0]+0.15 and self.btn_light_1_r_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_r_r.position[2]+0.4:
-                self.btn_light_1_r_r_down = True
-
-            if self.btn_light_1_g_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_g_r.position[0]+0.15 and self.btn_light_1_g_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_g_r.position[2]+0.4:
-                self.btn_light_1_g_r_down = True
-
-            if self.btn_light_1_b_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_b_r.position[0]+0.15 and self.btn_light_1_b_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_b_r.position[2]+0.4:
-                self.btn_light_1_b_r_down = True
-
-
-            if self.btn_light_1_r_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_r_l.position[0]+0.15 and self.btn_light_1_r_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_r_l.position[2]+0.4:
-                self.btn_light_1_r_l_down = True
-
-            if self.btn_light_1_g_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_g_l.position[0]+0.15 and self.btn_light_1_g_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_g_l.position[2]+0.4:
-                self.btn_light_1_g_l_down = True
-
-            if self.btn_light_1_b_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_b_l.position[0]+0.15 and self.btn_light_1_b_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_b_l.position[2]+0.4:
-                self.btn_light_1_b_l_down = True
+            self.btn_light_1_r_l_down = self.btn_light_1_r_l.click(event, self.app)
+            self.btn_light_1_g_l_down = self.btn_light_1_g_l.click(event, self.app)
+            self.btn_light_1_b_l_down = self.btn_light_1_b_l.click(event, self.app)
 
         if(event.type == pygame.MOUSEBUTTONUP):
             pos_x = 6*(event.pos[0]/self.app.window_width*2 -1)
             pos_y = 3*(-(event.pos[1]/self.app.window_height*2 -1))
-            if self.btn_light_1_x_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_x_r.position[0]+0.15 and self.btn_light_1_x_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_x_r.position[2]+0.4:
+            if(self.btn_light_1_x_r.click(event, self.app)):
                 self.btn_light_1_x_r_down = False
 
-            if self.btn_light_1_y_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_y_r.position[0]+0.15 and self.btn_light_1_y_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_y_r.position[2]+0.4:
+            if(self.btn_light_1_y_r.click(event, self.app)):
                 self.btn_light_1_y_r_down = False
 
-            if self.btn_light_1_z_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_z_r.position[0]+0.15 and self.btn_light_1_z_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_z_r.position[2]+0.4:
+            if(self.btn_light_1_z_r.click(event, self.app)):
                 self.btn_light_1_z_r_down = False
 
 
-            if self.btn_light_1_x_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_x_l.position[0]+0.15 and self.btn_light_1_x_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_x_l.position[2]+0.4:
+            if(self.btn_light_1_x_l.click(event, self.app)):
                 self.btn_light_1_x_l_down = False
 
-            if self.btn_light_1_y_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_y_l.position[0]+0.15 and self.btn_light_1_y_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_y_l.position[2]+0.4:
+            if(self.btn_light_1_y_l.click(event, self.app)):
                 self.btn_light_1_y_l_down = False
 
-            if self.btn_light_1_z_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_z_l.position[0]+0.15 and self.btn_light_1_z_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_z_l.position[2]+0.4:
+            if(self.btn_light_1_z_l.click(event, self.app)):
                 self.btn_light_1_z_l_down = False
 
 
 
-            if self.btn_light_1_r_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_r_r.position[0]+0.15 and self.btn_light_1_r_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_r_r.position[2]+0.4:
+            if(self.btn_light_1_r_r.click(event, self.app)):
                 self.btn_light_1_r_r_down = False
 
-            if self.btn_light_1_g_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_g_r.position[0]+0.15 and self.btn_light_1_g_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_g_r.position[2]+0.4:
+            if(self.btn_light_1_g_r.click(event, self.app)):
                 self.btn_light_1_g_r_down = False
 
-            if self.btn_light_1_b_r.position[0]-0.15 <= -pos_y <= self.btn_light_1_b_r.position[0]+0.15 and self.btn_light_1_b_r.position[2]-0.4 <= -pos_x <= self.btn_light_1_b_r.position[2]+0.4:
+            if(self.btn_light_1_b_r.click(event, self.app)):
                 self.btn_light_1_b_r_down = False
 
 
-            if self.btn_light_1_r_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_r_l.position[0]+0.15 and self.btn_light_1_r_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_r_l.position[2]+0.4:
+            if(self.btn_light_1_r_l.click(event, self.app)):
                 self.btn_light_1_r_l_down = False
 
-            if self.btn_light_1_g_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_g_l.position[0]+0.15 and self.btn_light_1_g_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_g_l.position[2]+0.4:
+            if(self.btn_light_1_g_l.click(event, self.app)):
                 self.btn_light_1_g_l_down = False
 
-            if self.btn_light_1_b_l.position[0]-0.15 <= -pos_y <= self.btn_light_1_b_l.position[0]+0.15 and self.btn_light_1_b_l.position[2]-0.4 <= -pos_x <= self.btn_light_1_b_l.position[2]+0.4:
+            if(self.btn_light_1_b_l.click(event, self.app)):
                 self.btn_light_1_b_l_down = False
 
 
     def update_lights(self):
         if self.btn_light_1_x_r_down:
-            self.btn_light_1_x.set_caption(str(round(self.app.lights[0].position[0], 2)))
-            self.app.lights[0].position[0] += 0.1
-            self.app.lights[0].sphere.model['translation'][0] += 0.1
+            self.btn_light_1_x.set_caption(str(round(self.app.lights[1].position[0], 2)))
+            self.app.lights[1].position[0] += 0.1
+            self.app.lights[1].sphere.model['translation'][0] += 0.1
         if self.btn_light_1_y_r_down:
-            self.btn_light_1_y.set_caption(str(round(self.app.lights[0].position[1], 2)))
-            self.app.lights[0].position[1] += 0.1
-            self.app.lights[0].sphere.model['translation'][1] += 0.1
+            self.btn_light_1_y.set_caption(str(round(self.app.lights[1].position[1], 2)))
+            self.app.lights[1].position[1] += 0.1
+            self.app.lights[1].sphere.model['translation'][1] += 0.1
         if self.btn_light_1_z_r_down:
-            self.btn_light_1_z.set_caption(str(round(self.app.lights[0].position[2], 2)))
-            self.app.lights[0].position[2] += 0.1
-            self.app.lights[0].sphere.model['translation'][2] += 0.1
+            self.btn_light_1_z.set_caption(str(round(self.app.lights[1].position[2], 2)))
+            self.app.lights[1].position[2] += 0.1
+            self.app.lights[1].sphere.model['translation'][2] += 0.1
         if self.btn_light_1_x_l_down:
-            self.btn_light_1_x.set_caption(str(round(self.app.lights[0].position[0], 2)))
-            self.app.lights[0].position[0] += -0.1
-            self.app.lights[0].sphere.model['translation'][0] += -0.1
+            self.btn_light_1_x.set_caption(str(round(self.app.lights[1].position[0], 2)))
+            self.app.lights[1].position[0] += -0.1
+            self.app.lights[1].sphere.model['translation'][0] += -0.1
         if self.btn_light_1_y_l_down:
-            self.btn_light_1_y.set_caption(str(round(self.app.lights[0].position[1], 2)))
-            self.app.lights[0].position[1] += -0.1
-            self.app.lights[0].sphere.model['translation'][1] += -0.1
+            self.btn_light_1_y.set_caption(str(round(self.app.lights[1].position[1], 2)))
+            self.app.lights[1].position[1] += -0.1
+            self.app.lights[1].sphere.model['translation'][1] += -0.1
         if self.btn_light_1_z_l_down:
-            self.btn_light_1_z.set_caption(str(round(self.app.lights[0].position[2], 2)))
-            self.app.lights[0].position[2] += -0.1
-            self.app.lights[0].sphere.model['translation'][2] += -0.1
+            self.btn_light_1_z.set_caption(str(round(self.app.lights[1].position[2], 2)))
+            self.app.lights[1].position[2] += -0.1
+            self.app.lights[1].sphere.model['translation'][2] += -0.1
 
         if self.btn_light_1_r_r_down:
-            self.btn_light_1_r.set_caption(str(round(self.app.lights[0].color[0]*255, 2)))
-            self.app.lights[0].color[0] += 0.01
-            self.app.lights[0].sphere.color[0] += 0.01
+            self.btn_light_1_r.set_caption(str(round(self.app.lights[1].color[0]*255, 2)))
+            self.app.lights[1].color[0] += 0.01
+            self.app.lights[1].sphere.color[0] += 0.01
         if self.btn_light_1_g_r_down:
-            self.btn_light_1_g.set_caption(str(round(self.app.lights[0].color[1]*255, 2)))
-            self.app.lights[0].color[1] += 0.01
-            self.app.lights[0].sphere.color[1] += 0.01
+            self.btn_light_1_g.set_caption(str(round(self.app.lights[1].color[1]*255, 2)))
+            self.app.lights[1].color[1] += 0.01
+            self.app.lights[1].sphere.color[1] += 0.01
         if self.btn_light_1_b_r_down:
-            self.btn_light_1_b.set_caption(str(round(self.app.lights[0].color[2]*255, 2)))
-            self.app.lights[0].color[2] += 0.01
-            self.app.lights[0].sphere.color[2] += 0.01
+            self.btn_light_1_b.set_caption(str(round(self.app.lights[1].color[2]*255, 2)))
+            self.app.lights[1].color[2] += 0.01
+            self.app.lights[1].sphere.color[2] += 0.01
         if self.btn_light_1_r_l_down:
-            self.btn_light_1_r.set_caption(str(round(self.app.lights[0].color[0]*255, 2)))
-            self.app.lights[0].color[0] += -0.01
-            self.app.lights[0].sphere.color[0] += -0.01
+            self.btn_light_1_r.set_caption(str(round(self.app.lights[1].color[0]*255, 2)))
+            self.app.lights[1].color[0] += -0.01
+            self.app.lights[1].sphere.color[0] += -0.01
         if self.btn_light_1_g_l_down:
-            self.btn_light_1_g.set_caption(str(round(self.app.lights[0].color[1]*255, 2)))
-            self.app.lights[0].color[1] += -0.01
-            self.app.lights[0].sphere.color[1] += -0.01
+            self.btn_light_1_g.set_caption(str(round(self.app.lights[1].color[1]*255, 2)))
+            self.app.lights[1].color[1] += -0.01
+            self.app.lights[1].sphere.color[1] += -0.01
         if self.btn_light_1_b_l_down:
-            self.btn_light_1_b.set_caption(str(round(self.app.lights[0].color[2]*255, 2)))
-            self.app.lights[0].color[2] += -0.01
-            self.app.lights[0].sphere.color[2] += -0.01
+            self.btn_light_1_b.set_caption(str(round(self.app.lights[1].color[2]*255, 2)))
+            self.app.lights[1].color[2] += -0.01
+            self.app.lights[1].sphere.color[2] += -0.01
 
 
     def render(self, renderer):

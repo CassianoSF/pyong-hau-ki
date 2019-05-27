@@ -36,7 +36,9 @@ class Object():
         }
         self.model_matrix = []
         self.view_matrix = []   
-        self.proj_matrix = []   
+        self.proj_matrix = []  
+
+        self.target_position = None 
 
     def translate(self, x, y, z):
         self.model['translation'] = [
@@ -81,3 +83,30 @@ class Object():
         self.texture.bind()
         self.va.bind()
         self.ib.bind()
+
+    def move_to(self, x, y, z, speed):
+        if (round(self.model['translation'][0], 2) < x):
+            self.model['translation'][0] += 0.01 * speed
+        if(round(self.model['translation'][0], 2) > x):
+            self.model['translation'][0] -= 0.01 * speed
+
+        if (round(self.model['translation'][1], 2) < y):
+            self.model['translation'][1] += 0.01 * speed
+        if(round(self.model['translation'][1], 2) > y):
+            self.model['translation'][1] -= 0.01 * speed
+
+        if (round(self.model['translation'][2], 2) < z):
+            self.model['translation'][2] += 0.01 * speed
+        if(round(self.model['translation'][2], 2) > z):
+            self.model['translation'][2] -= 0.01 * speed
+
+        if (((round(self.model['translation'][0], 2) - x)**2)**0.5 < 0.02):
+            self.model['translation'][0] = x
+        if (((round(self.model['translation'][1], 2) - y)**2)**0.5 < 0.02):
+            self.model['translation'][1] = y
+        if (((round(self.model['translation'][2], 2) - z)**2)**0.5 < 0.02):
+            self.model['translation'][2] = z
+
+    def update(self):
+        if self.target_position:
+            self.move_to(*self.target_position, 20)
