@@ -57,23 +57,6 @@ class Loader():
                             
                             self.indices.append(len(self.indices))
 
-
-            if not len(self.tex_map):
-                for i, el in enumerate(self.vertices):
-                    if i % 4 == 0:
-                        self.tex_map.append(1)
-                        self.tex_map.append(1)
-                    if i % 4 == 1:
-                        self.tex_map.append(0)
-                        self.tex_map.append(1)
-                    if i % 4 == 2:
-                        self.tex_map.append(1)
-                        self.tex_map.append(0)
-                    if i % 4 == 3:
-                        self.tex_map.append(0)
-                        self.tex_map.append(0)
-
-
             file.close()
         except IOError:
             print(".obj file not found.")
