@@ -96,7 +96,6 @@ class App:
 
         self.gui = Gui(self.window_width, self.window_height, self)
         self.renderer = Renderer(self.lights)
-
         self.pong_hau_ki = PongHauKi(self.player11,self.player12,self.player21,self.player22,self.tabuleiro, self.lights)
 
     def handle_event(self, event):
@@ -116,6 +115,12 @@ class App:
     def render(self):
         self.renderer.clear()
         self.gui.render(self.renderer)
+        if(self.pong_hau_ki.plays_count == 50):
+            pygame.mixer.music.load('./resources/sounds/musica_menu.wav')
+            pygame.mixer.music.play()
+            self.menu = True
+            self.gui.menu = True
+            self.pong_hau_ki.restart()
         if not self.menu:
             self.camera.update()
             self.renderer.render_with_lights(self.tabuleiro)

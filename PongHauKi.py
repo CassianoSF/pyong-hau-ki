@@ -24,9 +24,9 @@ class FireWork:
             0,
             randint(-10,10)/10
         ]
-        for i in range(20):
+        for i in range(40):
             cube = Object(self.cube_obj, self.camera, None)
-            cube.scale(0.05,0.05,0.05)
+            cube.scale(0.02,0.02,0.02)
             cube.color = [
                 randint(-10,10)/10, 
                 randint(-10,10)/10, 
@@ -95,6 +95,8 @@ class PongHauKi:
         self.selected_piece = self.playerA1
         self.free_position = self.positions[4]
         self.winner = None
+
+        self.plays_count = 0
 
         self.can_move_tree = {
             str(self.positions[0]): {
@@ -182,6 +184,8 @@ class PongHauKi:
                 self.selected_piece = self.playerA1
             if self.have_winner():
                 self.winner = previous_player
+            else:
+                self.plays_count += 1
         else:
             self.light.color = [1,0,0]
 
@@ -193,6 +197,22 @@ class PongHauKi:
         if event.type == pygame.KEYDOWN:
             if event.key==pygame.K_SPACE:
                 self.move_piece()
+
+    def restart(self):
+        self.playerA1.model['translation'] = [-0.8, 0.2, 0.8]
+        self.playerA1.target_position = None
+        self.playerA2.model['translation'] = [-0.8, 0.2,-0.8]
+        self.playerA2.target_position = None
+        self.playerB1.model['translation'] = [ 0.8, 0.2,-0.8]
+        self.playerB1.target_position = None
+        self.playerB2.model['translation'] = [ 0.8, 0.2, 0.8]
+        self.playerB2.target_position = None
+        self.free_position = self.positions[4]
+        self.winner = None
+        self.current_player = "playerA"
+        self.selected_piece = self.playerA1
+        self.plays_count = 0
+        self.render_count = 0
 
     def update(self, renderer):
         self.light.set_position(self.selected_piece.model['translation'])
