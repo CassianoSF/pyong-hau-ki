@@ -80,7 +80,8 @@ class Object():
             ))
 
     def bind(self):
-        self.texture.bind()
+        if self.texture:
+            self.texture.bind()
         self.va.bind()
         self.ib.bind()
 

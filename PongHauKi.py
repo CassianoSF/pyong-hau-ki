@@ -1,4 +1,6 @@
 import pygame, os
+import copy 
+from random import randint
 
 from Core.Texture  import Texture
 from Core.Renderer import Renderer
@@ -10,10 +12,45 @@ from Loader import Loader
 from Camera import Camera
 from Light  import Light
 
+
+class FireWork:
+    def __init__(self, camera, cube_obj):
+        self.camera = camera
+        self.cubes = []
+        self.directions = []
+        self.cube_obj = cube_obj
+        position = [
+            randint(-10,10)/10,
+            0,
+            randint(-10,10)/10
+        ]
+        for i in range(20):
+            cube = Object(self.cube_obj, self.camera, None)
+            cube.scale(0.05,0.05,0.05)
+            cube.color = [
+                randint(-10,10)/10, 
+                randint(-10,10)/10, 
+                randint(-10,10)/10
+            ]
+            cube.translate(*position)
+            self.cubes.append(cube)
+            self.directions.append([
+                randint(-10,10)/500, 
+                randint(-10,10)/500, 
+                randint(-10,10)/500
+            ])
+
+    def render(self, renderer):
+        for i, cube in enumerate(self.cubes):
+            renderer.render_solid_color(cube)
+            cube.translate(*self.directions[i])
+
 class PongHauKi:
     def __init__(self, playerA1, playerA2, playerB1, playerB2, tabuleiro, lights):
         self.window_width  = 1280
         self.window_height = 620
+
+        self.cube_obj   = Loader("./resources/models/cube.obj")
         player1_obj   = Loader("./resources/models/drone.obj")
         player2_obj   = Loader("./resources/models/galinha.obj")
         galinha_texture  = Texture("./resources/textures/galinha.png")
@@ -96,6 +133,10 @@ class PongHauKi:
                 str(self.positions[4]): False
             }
         }
+        self.fire_work1 = FireWork(self.camera, self.cube_obj)
+        self.fire_work2 = FireWork(self.camera, self.cube_obj)
+        self.fire_work3 = FireWork(self.camera, self.cube_obj)
+        self.render_count = 0
 
     def have_winner(self):
         if self.current_player == "playerA":
@@ -160,11 +201,26 @@ class PongHauKi:
         self.playerB1.update()
         self.playerB2.update()
 
+        if self.render_count > 35:
+            self.fire_work1 = FireWork(self.camera, self.cube_obj)
+            self.fire_work2 = FireWork(self.camera, self.cube_obj)
+            self.fire_work3 = FireWork(self.camera, self.cube_obj)
+            self.render_count = 0
+
         if self.winner == "playerA":
             renderer.render_with_lights(self.nave)
             self.nave.model['rotation'][0] += 0.1
             self.nave_win.render(renderer)
+            self.fire_work1.render(renderer)
+            self.fire_work2.render(renderer)
+            self.fire_work3.render(renderer)
+            self.render_count += 1
+
         elif self.winner == "playerB":
             renderer.render_with_lights(self.galinha)
             self.galinha.model['rotation'][0] += 0.1
             self.galinha_win.render(renderer)
+            self.fire_work1.render(renderer)
+            self.fire_work2.render(renderer)
+            self.fire_work3.render(renderer)
+            self.render_count += 1
