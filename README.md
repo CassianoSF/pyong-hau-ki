@@ -11,3 +11,7 @@ TECLAS 1, 2, 3 pressionadas mudam a posição camera
 TECLAS a, w, s, d, e mouse wheel movimentam a camera
 
 TECLA P pressionada muda para projeção ortogonal
+
+JOGO:
+  Mouse Click seleciona a peça
+  Espaço move a peça
